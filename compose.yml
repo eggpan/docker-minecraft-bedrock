@@ -1,0 +1,19 @@
+services:
+  minecraft-be:
+    container_name: minecraft-be
+    build:
+      context: .
+      args:
+        MINECRAFT_UID: "${MINECRAFT_UID:-1000}"
+        MINECRAFT_GID: "${MINECRAFT_GID:-1000}"
+    environment:
+      SERVER_NAME: "${SERVER_NAME:-}"
+      LEVEL_NAME: "${LEVEL_NAME:-}"
+      TZ: "${TZ:-}"
+    volumes:
+      - type: bind
+        source: "${DATA_DIR:-./data}"
+        target: /data
+    stdin_open: true
+    ports:
+      - "0.0.0.0:19132:19132/udp"
