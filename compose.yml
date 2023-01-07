@@ -9,11 +9,11 @@ services:
     environment:
       SERVER_NAME: "${SERVER_NAME:-}"
       LEVEL_NAME: "${LEVEL_NAME:-}"
+      DIFFICULTY: "${DIFFICULTY:-}"
       TZ: "${TZ:-}"
     volumes:
       - type: bind
         source: "${DATA_DIR:-./data}"
         target: /data
-    stdin_open: true
     ports:
       - "0.0.0.0:19132:19132/udp"

@@ -6,11 +6,6 @@ if [ ! -f 'bedrock_server' ]; then
   rm bedrock-server-*.zip
 fi
 
-
-if [ -z "$ALLOW_CHEATS" ]; then
-  ALLOW_CHEATS=true
-fi
-
 PARAMS=(
   'SERVER_NAME'
   'GAMEMODE'
@@ -60,12 +55,15 @@ if [ $? -eq 1 ]; then
   echo -e "\nemit-server-telemetry=true" >> /data/server.properties
 fi
 
-./bedrock_server 0</proc/self/fd/0 1>/proc/self/fd/1 2>/proc/self/fd/2 &
-MINECRAFT_PID=$!
+screen -d -m -S minecraft bash -c './bedrock_server 2>&1 | tee /proc/1/fd/1'
+while [ true ]; do
+  pgrep bedrock_server > /dev/null && :
+  if [ $? -eq 0 ]; then
+    break
+  fi
+done
 
-terminate() {
-  echo Terminating Minecraft... $MINECRAFT_PID
-  echo stop > /proc/${MINECRAFT_PID}/fd/0
+wait_bedrock_server_close() {
   while [ true ]; do
     pgrep bedrock_server > /dev/null && :
     if [ $? -eq 1 ]; then
@@ -74,5 +72,13 @@ terminate() {
     sleep 1
   done
 }
+
+terminate() {
+  echo Terminating Minecraft...
+  screen -S minecraft -X stuff stop^M
+  wait_bedrock_server_close
+}
 trap terminate TERM
+
+wait_bedrock_server_close &
 wait

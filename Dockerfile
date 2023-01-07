@@ -11,10 +11,10 @@ RUN groupadd -g $MINECRAFT_GID minecraft \
     && chown minecraft:minecraft /data
 
 RUN apt-get update \
-    && apt-get install -y curl netcat tzdata unzip \
+    && apt-get install -y curl netcat screen tzdata unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-COPY start.sh /usr/local/bin/
+COPY console start.sh /usr/local/bin/
 
 EXPOSE 19132/udp
 
