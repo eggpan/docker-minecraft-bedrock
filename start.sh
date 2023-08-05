@@ -1,9 +1,10 @@
 #!/bin/bash -e
 
+echo version: $MINECRAFT_VERSION
 if [ ! -f 'bedrock_server' ]; then
   curl -O "https://minecraft.azureedge.net/bin-linux/bedrock-server-${MINECRAFT_VERSION}.zip"
-  unzip bedrock-server-*.zip
-  rm bedrock-server-*.zip
+  unzip -o bedrock-server-${MINECRAFT_VERSION}.zip
+  rm bedrock-server-${MINECRAFT_VERSION}.zip
 fi
 
 PARAMS=(

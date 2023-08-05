@@ -10,10 +10,11 @@ services:
       SERVER_NAME: "${SERVER_NAME:-}"
       LEVEL_NAME: "${LEVEL_NAME:-}"
       DIFFICULTY: "${DIFFICULTY:-}"
+      MINECRAFT_VERSION: "${MINECRAFT_VERSION:-}"
       TZ: "${TZ:-}"
     volumes:
       - type: bind
         source: "${DATA_DIR:-./data}"
         target: /data
     ports:
-      - "0.0.0.0:19132:19132/udp"
+      - "19132:19132/udp"
