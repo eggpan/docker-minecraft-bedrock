@@ -1,8 +1,8 @@
 services:
-  minecraft-be:
-    container_name: minecraft-be
+  minecraft-bedrock:
+    container_name: minecraft-bedrock
+    image: minecraft-bedrock
     build:
-      context: .
       args:
         MINECRAFT_UID: "${MINECRAFT_UID:-1000}"
         MINECRAFT_GID: "${MINECRAFT_GID:-1000}"
@@ -10,7 +10,7 @@ services:
       SERVER_NAME: "${SERVER_NAME:-}"
       LEVEL_NAME: "${LEVEL_NAME:-}"
       DIFFICULTY: "${DIFFICULTY:-}"
-      MINECRAFT_VERSION: "${MINECRAFT_VERSION:-}"
+      MINECRAFT_VERSION: "${MINECRAFT_VERSION:-1.20.30.02}"
       TZ: "${TZ:-}"
     volumes:
       - type: bind
@@ -18,3 +18,8 @@ services:
         target: /data
     ports:
       - "19132:19132/udp"
+    restart: on-failure
+
+networks:
+  default:
+    name: minecraft-bedrock

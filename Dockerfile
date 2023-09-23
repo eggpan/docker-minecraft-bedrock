@@ -5,9 +5,10 @@ ARG MINECRAFT_GID=1000
 
 ENV MINECRAFT_VERSION=1.19.51.01
 
+WORKDIR /data
+
 RUN groupadd -g $MINECRAFT_GID minecraft \
     && useradd -m -s /bin/bash -u $MINECRAFT_UID -g $MINECRAFT_GID minecraft \
-    && mkdir /data \
     && chown minecraft:minecraft /data
 
 RUN apt-get update \
@@ -19,7 +20,6 @@ COPY console start.sh /usr/local/bin/
 EXPOSE 19132/udp
 
 USER minecraft
-WORKDIR /data
 
 CMD ["start.sh"]
 

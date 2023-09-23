@@ -1,11 +1,8 @@
 #!/bin/bash -e
 
-echo version: $MINECRAFT_VERSION
-if [ ! -f 'bedrock_server' ]; then
-  curl -O "https://minecraft.azureedge.net/bin-linux/bedrock-server-${MINECRAFT_VERSION}.zip"
-  unzip -o bedrock-server-${MINECRAFT_VERSION}.zip
-  rm bedrock-server-${MINECRAFT_VERSION}.zip
-fi
+curl -O "https://minecraft.azureedge.net/bin-linux/bedrock-server-${MINECRAFT_VERSION}.zip"
+unzip -o bedrock-server-${MINECRAFT_VERSION}.zip
+rm bedrock-server-${MINECRAFT_VERSION}.zip
 
 PARAMS=(
   'SERVER_NAME'
@@ -56,7 +53,7 @@ if [ $? -eq 1 ]; then
   echo -e "\nemit-server-telemetry=true" >> /data/server.properties
 fi
 
-screen -d -m -S minecraft bash -c './bedrock_server 2>&1 | tee /proc/1/fd/1'
+screen -d -m -S minecraft bash -c './bedrock_server 2>&1 | grep -Ev --line-buffered "Running AutoCompaction..." | tee /proc/1/fd/1'
 while [ true ]; do
   pgrep bedrock_server > /dev/null && :
   if [ $? -eq 0 ]; then
