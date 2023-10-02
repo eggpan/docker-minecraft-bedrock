@@ -1,8 +1,10 @@
 #!/bin/bash -e
 
-curl -O "https://minecraft.azureedge.net/bin-linux/bedrock-server-${MINECRAFT_VERSION}.zip"
-unzip -o bedrock-server-${MINECRAFT_VERSION}.zip
-rm bedrock-server-${MINECRAFT_VERSION}.zip
+LATEST_URL=$(curl -s 'https://www.minecraft.net/ja-jp/download/server/bedrock' -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36' | grep -Po 'href="\K[^"]+(?=.*data-platform="serverBedrockLinux")')
+FILENAME=$(basename "$LATEST_URL")
+curl -sO "$LATEST_URL"
+unzip -o "$FILENAME"
+rm "$FILENAME"
 
 PARAMS=(
   'SERVER_NAME'
